@@ -20,13 +20,17 @@
 
     .image-container {
       position: relative;
-      width: 90%;
+      width: 95%;
       max-width: 1500px;
       margin-top: 50px;
+      padding-bottom: 5vh;
+      display: flex;
+      justify-content: center;
     }
 
     .scene-image {
-      width: 100%;
+      width: 60%;
+      max-height: 80vh;
       height: auto;
       display: block;
       box-shadow: 0 0 20px rgba(0,0,0,0.6);
@@ -34,18 +38,18 @@
 
     .speech-bubble {
       position: absolute;
-      top: 5%;
-      left: 2%;
-      max-width: 35%;
       background-color: #f5deb3;
       color: #2c1a0d;
-      padding: 50px;
-      border-radius: 50px;
+      border-radius: 30px;
       box-shadow: 0 0 15px rgba(0,0,0,0.4);
-      font-size: 1.7em;
+      font-size: 0.9em;
       line-height: 1.6em;
+      width: 30%;
+      padding: 15px;
+      left: 5%;
+      top: 50%;
+      transform: translateY(-50%);
     }
-
 
     .speech-bubble::after {
       content: "";
@@ -61,11 +65,11 @@
 
     .next-button {
       position: absolute;
-      bottom: 40px;
+      bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 2em;
-      padding: 28px 60px;
+      font-size: 1.4em;
+      padding: 14px 32px;
       background-color: #5a2e1c;
       color: white;
       border: none;
@@ -82,7 +86,7 @@
     .tooltip {
       position: relative;
       display: inline-block;
-      border-bottom: 1px dotted #2c1a0d; /* optional underline */
+      border-bottom: 1px dotted #2c1a0d;
       cursor: help;
     }
 
@@ -106,7 +110,6 @@
     .tooltip:hover .tooltip-text {
       visibility: visible;
     }
-
   </style>
 </head>
 <body>
@@ -123,7 +126,6 @@
       </span>
       — a place devoted to gathering, preserving, and sharing the truths of our world. Here, knowledge is not hoarded for the powerful, but preserved for all who seek to learn. That is why I’ve chosen to apprentice here — to study, to listen, and to protect the stories that shape who we are. Would you like to join me on my quest for wisdom?
     </div>
-
 
     <button class="next-button" onclick="goToNextScene()">Join the quest!</button>
   </div>
