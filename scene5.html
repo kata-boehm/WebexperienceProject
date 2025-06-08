@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Embers of Alexandria – Scene 5: Save the Library</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #2c1a0d;
+      font-family: 'Georgia', serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .image-container {
+      position: relative;
+      width: 95%;
+      max-width: 1500px;
+      margin-top: 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .game-wrapper {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    canvas {
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 80vh;
+      aspect-ratio: 1200 / 750;
+      background: url('library-inside-bg.png') no-repeat center center;
+      background-size: cover;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      border: 4px solid #5a2e1c;
+      display: none;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(44, 26, 13, 0.95);
+      color: #f5deb3;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      z-index: 10;
+      text-align: center;
+      padding-top: 18vh; /* 👈 this adds top space */
+      padding-left: 2em;
+      padding-right: 2em;
+    }
+
+
+    .overlay h1 {
+      font-size: 2.2em;
+      margin-bottom: 0.5em;
+    }
+
+    .overlay p {
+      font-size: 1em;
+      margin-bottom: 1.2em;
+      max-width: 500px;
+      line-height: 1.5em;
+    }
+
+    .overlay button {
+      font-size: 1.2em;
+      padding: 12px 30px;
+      background-color: #f5deb3;
+      color: #2c1a0d;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+      box-shadow: 0 0 10px #000;
+    }
+
+    .overlay button:hover {
+      background-color: #e8c97f;
+    }
+
+    #continueBtn {
+      display: none;
+      position: absolute;
+      top: 55%; /* 💡 Position right below text */
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.4em;
+      padding: 14px 32px;
+      background-color: #5a2e1c;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      z-index: 30;
+    }
+
+
+    #continueBtn:hover {
+      background-color: #8b4513;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="image-container">
+    <div class="overlay" id="startOverlay">
+      <h1>🔥 Save the Library!</h1>
+      <p>
+        The shelves are burning! Use the <strong>arrow keys</strong> to move and press <strong>spacebar</strong> to throw water.<br>
+        Extinguish the flames before the knowledge is lost!
+      </p>
+      <button onclick="startGame()">Start Saving</button>
+    </div>
+
+    <div class="game-wrapper">
+      <canvas id="gameCanvas" width="1200" height="750"></canvas>
+      <button id="continueBtn" onclick="goToNextScene()">Continue</button>
+    </div>
+  </div>
+
+  <audio id="fireSound" src="fire.mp3" loop></audio>
+  <audio id="splashSound" src="splash.mp3"></audio>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const overlay = document.getElementById('startOverlay');
+    const continueBtn = document.getElementById('continueBtn');
+
+    const shelfImg = new Image();
+    shelfImg.src = 'shelf-burning.png';
+    const shelfSavedImg = new Image();
+    shelfSavedImg.src = 'shelf-saved.png';
+    const bucketImg = new Image();
+    bucketImg.src = 'bucket.png';
+
+    const fireSound = document.getElementById('fireSound');
+    const splashSound = document.getElementById('splashSound');
+
+    const shelves = [
+      { x: 240, y: 220, width: 200, height: 320, onFire: true },
+      { x: 525, y: 180, width: 200, height: 320, onFire: true },
+      { x: 830, y: 220, width: 200, height: 320, onFire: true }
+    ];
+
+    const player = {
+      x: 600,
+      y: 650,
+      width: 120,
+      height: 100,
+      speed: 12
+    };
+
+    const buckets = [];
+    let keys = {};
+    let score = 0;
+    let timeLeft = 30;
+    let gameEnded = false;
+    let spawnInterval = 1000;
+    let maxShelves = 20;
+
+    document.addEventListener('keydown', (e) => keys[e.key] = true);
+    document.addEventListener('keyup', (e) => keys[e.key] = false);
+
+    function spawnNewShelf() {
+      if (!gameEnded && shelves.length < maxShelves) {
+        const x = Math.floor(Math.random() * (canvas.width - 220));
+        const y = 150 + Math.random() * 250;
+        shelves.push({ x, y, width: 200, height: 320, onFire: true });
+      }
+    }
+
+    function drawShelves() {
+      shelves.forEach(shelf => {
+        const img = shelf.onFire ? shelfImg : shelfSavedImg;
+        ctx.drawImage(img, shelf.x, shelf.y, shelf.width, shelf.height);
+      });
+    }
+
+    function drawBuckets() {
+      buckets.forEach(bucket => {
+        ctx.drawImage(bucketImg, bucket.x - 20, bucket.y - 60, 90, 90);
+      });
+    }
+
+    function updateBuckets() {
+      for (let i = 0; i < buckets.length; i++) {
+        const b = buckets[i];
+        b.y -= 10;
+
+        for (let shelf of shelves) {
+          if (
+            b.x > shelf.x &&
+            b.x < shelf.x + shelf.width &&
+            b.y > shelf.y &&
+            b.y < shelf.y + shelf.height &&
+            shelf.onFire
+          ) {
+            shelf.onFire = false;
+            splashSound.currentTime = 0;
+            splashSound.play();
+            score++;
+            buckets.splice(i, 1);
+            i--;
+            break;
+          }
+        }
+
+        if (b.y < 0) {
+          buckets.splice(i, 1);
+          i--;
+        }
+      }
+    }
+
+    function updatePlayer() {
+      if (keys['ArrowLeft'] || keys['a']) player.x -= player.speed;
+      if (keys['ArrowRight'] || keys['d']) player.x += player.speed;
+      player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
+    }
+
+    function throwBucket() {
+      if (!gameEnded) {
+        buckets.push({ x: player.x + player.width / 2, y: player.y });
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') throwBucket();
+    });
+
+    function drawUI() {
+      ctx.fillStyle = 'white';
+      ctx.font = '22px Georgia';
+      ctx.fillText(`⏳ Time: ${timeLeft}`, 20, 40);
+      ctx.fillText(`💧 Score: ${score}`, canvas.width - 170, 40);
+    }
+
+    function endGame() {
+      gameEnded = true;
+      fireSound.pause();
+      ctx.fillStyle = 'rgba(0,0,0,0.7)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'white';
+      ctx.font = '36px Georgia';
+
+      if (score === shelves.length) {
+        ctx.fillText("You saved the knowledge! 📚", 300, 370);
+        continueBtn.style.display = "block";
+      } else {
+        ctx.fillText("Too late! The scrolls are lost. 😢", 300, 370);
+        ctx.font = '24px Georgia';
+        ctx.fillText("Refresh to try again.", 460, 410);
+      }
+    }
+
+    function drawPlayer() {
+      ctx.drawImage(bucketImg, player.x, player.y, player.width, player.height);
+    }
+
+    function gameLoop() {
+      if (!gameEnded) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        updatePlayer();
+        updateBuckets();
+        drawShelves();
+        drawBuckets();
+        drawPlayer();
+        drawUI();
+
+        if (score === shelves.length) {
+          endGame();
+        }
+
+        requestAnimationFrame(gameLoop);
+      }
+    }
+
+    function startGame() {
+      overlay.style.display = 'none';
+      canvas.style.display = 'block';
+      fireSound.play();
+      setInterval(() => {
+        if (!gameEnded) timeLeft--;
+        if (timeLeft <= 0) endGame();
+      }, 1000);
+      setInterval(spawnNewShelf, spawnInterval);
+      gameLoop();
+    }
+
+    function goToNextScene() {
+      window.location.href = "scene6.html";
+    }
+  </script>
+</body>
+</html>

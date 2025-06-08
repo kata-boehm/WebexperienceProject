@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Embers of Alexandria</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #2c1a0d;
+      font-family: 'Georgia', serif;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .image-container {
+      position: relative;
+      width: 95vw;
+      max-width: 1500px;
+      box-sizing: border-box;
+    }
+
+    .title-image {
+      width: 60%;
+      height: auto;
+      max-height: 80vh;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+
+
+
+    .start-button {
+      position: absolute;
+      bottom: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 4vw;
+      padding: 2vh 4vw;
+      background-color: #5a2e1c;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      max-width: 80vw;
+      text-align: center;
+    }
+
+    .start-button:hover {
+      background-color: #8b4513;
+    }
+
+    @media (max-width: 600px) {
+      .start-button {
+        font-size: 6vw;
+        padding: 2vh 5vw;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="image-container">
+    <img src="background.png" alt="Embers of Alexandria" class="title-image" />
+    <button class="start-button" onclick="startGame()">Start Game</button>
+  </div>
+
+  <script>
+    function startGame() {
+      window.location.href = "scene2.html";
+    }
+  </script>
+
+</body>
+</html>
