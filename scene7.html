@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scene 7 – Choose the Scrolls</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #2c1a0d;
+      font-family: 'Georgia', serif;
+      color: #fff;
+      overflow: hidden;
+    }
+    .scene-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: url('library-burning.png') no-repeat center center;
+      background-size: cover;
+    }
+    .scroll {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      background: url('scroll-closed.png') no-repeat center center;
+      background-size: contain;
+      cursor: pointer;
+    }
+    .scroll.selected {
+      filter: drop-shadow(0 0 10px #ffd700);
+    }
+    .scroll:nth-child(1) { top: 70%; left: 10%; }
+    .scroll:nth-child(2) { top: 75%; left: 25%; }
+    .scroll:nth-child(3) { top: 72%; left: 40%; }
+    .scroll:nth-child(4) { top: 77%; left: 55%; }
+    .scroll:nth-child(5) { top: 74%; left: 70%; }
+    .scroll:nth-child(6) { top: 73%; left: 85%; }
+    .scroll:nth-child(7) { top: 78%; left: 50%; }
+    #messageBox {
+      display: none;
+      position: absolute;
+      left: 50%;
+      top: 20%;
+      transform: translateX(-50%);
+      background-color: #3e2614ee;
+      padding: 30px;
+      width: 500px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+      z-index: 20;
+      text-align: left;
+    }
+    #messageBox p {
+      font-size: 1.1em;
+      margin-bottom: 20px;
+    }
+    .message-btns {
+      text-align: right;
+    }
+    .message-btns button {
+      font-size: 1em;
+      padding: 10px 20px;
+      margin-left: 10px;
+      background-color: #f5deb3;
+      color: #2c1a0d;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #instructions {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.3em;
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 15px 30px;
+      border-radius: 10px;
+      max-width: 80%;
+    }
+    #continueBtn {
+      display: none;
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.5em;
+      padding: 12px 30px;
+      background-color: #f5deb3;
+      color: #2c1a0d;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #000;
+    }
+    #continueBtn:hover {
+      background-color: #e0cf9d;
+    }
+  </style>
+</head>
+<body>
+  <div class="scene-container">
+    <div class="scroll" onclick="openScroll(0, this)"></div>
+    <div class="scroll" onclick="openScroll(1, this)"></div>
+    <div class="scroll" onclick="openScroll(2, this)"></div>
+    <div class="scroll" onclick="openScroll(3, this)"></div>
+    <div class="scroll" onclick="openScroll(4, this)"></div>
+    <div class="scroll" onclick="openScroll(5, this)"></div>
+    <div class="scroll" onclick="openScroll(6, this)"></div>
+
+    <div id="instructions">
+      Choose 2 scrolls to carry with you. There are no wrong answers.
+    </div>
+
+    <div id="messageBox">
+      <p id="scrollContent"></p>
+      <div class="message-btns">
+        <button onclick="closeMessageBox()">Return</button>
+        <button id="toggleSelectBtn" onclick="toggleScrollSelection()">Choose</button>
+      </div>
+    </div>
+
+    <button id="continueBtn" onclick="goToNextScene()">Continue</button>
+  </div>
+
+  <script>
+    let selectedCount = 0;
+    const maxSelections = 2;
+    const selectedScrolls = new Set();
+    let currentScrollIndex = null;
+    let currentScrollEl = null;
+
+    const facts = [
+      "This scroll contains Homer’s Iliad — an epic tale...",
+      "The Geography of Eratosthenes measured Earth’s circumference...",
+      "A medical scroll by Hippocrates on ancient Greek medicine.",
+      "Euclid’s Elements — the foundations of geometry & logic.",
+      "An Egyptian star calendar predicting Nile floods via Sirius.",
+      "Translations from Persia and India — knowledge without borders.",
+      "Rhetorical speeches from Athens — early democratic voices."
+    ];
+
+    function openScroll(index, el) {
+      currentScrollIndex = index;
+      currentScrollEl = el;
+      document.getElementById("scrollContent").textContent = facts[index];
+      const btn = document.getElementById("toggleSelectBtn");
+      btn.textContent = selectedScrolls.has(index) ? "Unchoose" : "Choose";
+      document.getElementById("messageBox").style.display = "block";
+    }
+
+    function toggleScrollSelection() {
+      const btn = document.getElementById("toggleSelectBtn");
+      if (selectedScrolls.has(currentScrollIndex)) {
+        selectedScrolls.delete(currentScrollIndex);
+        currentScrollEl.classList.remove("selected");
+        selectedCount--;
+        btn.textContent = "Choose";
+      } else {
+        if (selectedCount >= maxSelections) return;
+        selectedScrolls.add(currentScrollIndex);
+        currentScrollEl.classList.add("selected");
+        selectedCount++;
+        btn.textContent = "Unchoose";
+      }
+      document.getElementById("continueBtn").style.display = selectedCount === maxSelections ? 'block' : 'none';
+    }
+
+    function closeMessageBox() {
+      document.getElementById("messageBox").style.display = "none";
+    }
+
+    function goToNextScene() {
+      localStorage.setItem('selectedScrolls', JSON.stringify([...selectedScrolls]));
+      window.location.href = "scene8.html";
+    }
+  </script>
+</body>
+</html>

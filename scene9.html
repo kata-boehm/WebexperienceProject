@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Embers of Alexandria – Scene 8</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #2c1a0d;
+      font-family: 'Georgia', serif;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .image-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: url('scene9.png') no-repeat center center;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .speech-bubble {
+      background-color: #f5deb3;
+      color: #2c1a0d;
+      padding: 30px;
+      border-radius: 25px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      max-width: 40%;
+      font-size: 1.2em;
+      line-height: 1.6em;
+    }
+
+    .continue-button {
+      position: absolute;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.5em;
+      padding: 12px 28px;
+      background-color: #5a2e1c;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    .continue-button:hover {
+      background-color: #8b4513;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="image-container">
+    <div class="speech-bubble">
+      We couldn’t save everything — but what we did preserve mattered. These scrolls carried observations, discoveries, and records of how people lived and learned. Generations later, that knowledge still speaks. Because when we write things down, we give the future a place to begin.
+    </div>
+    <button class="continue-button" onclick="goToNextScene()">Fade into the present</button>
+  </div>
+
+  <script>
+    function goToNextScene() {
+      window.location.href = "scene10.html";
+    }
+  </script>
+
+</body>
+</html>

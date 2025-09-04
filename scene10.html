@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Embers of Alexandria – Scene 10</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #1e1107;
+      font-family: 'Georgia', serif;
+      color: #fff;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .image-container {
+      position: relative;
+      width: 90%;
+      max-width: 1500px;
+      margin-top: 50px;
+      padding-bottom: 5vh;
+      display: flex;
+      justify-content: center;
+    }
+
+    .scene-image {
+      width: 60%;
+      max-height: 80vh;
+      height: auto;
+      display: block;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+
+    .speech-bubble {
+      position: absolute;
+      top: 15%;
+      right: 5%;
+      width: 35%;
+      background-color: #f5deb3;
+      color: #2c1a0d;
+      padding: 25px;
+      border-radius: 25px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      font-size: 0.9em;
+      line-height: 1.5em;
+    }
+
+    .speech-bubble::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: -20px;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border: 10px solid transparent;
+      border-right-color: #f5deb3;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="image-container">
+    <img src="scene10.png" alt="A young boy amazed by ancient scrolls" class="scene-image" />
+    <div class="speech-bubble" id="scrollSpeech">
+      Loading...
+    </div>
+  </div>
+
+  <script>
+    const scrollFacts = [
+      "Homer’s Iliad — epic tales of the Trojan War.",
+      "Eratosthenes’ Geography — measuring Earth’s circumference.",
+      "Hippocratic medical scroll — early Greek medical knowledge.",
+      "Euclid’s Elements — fundamental geometry and logic.",
+      "Egyptian astronomical calendar — predicting Nile floods via Sirius.",
+      "Translations from Persia and India — expanding cross-cultural wisdom.",
+      "Rhetorical speeches from Athens — voices of early democracy."
+    ];
+
+    const selected = JSON.parse(localStorage.getItem('selectedScrolls')) || [];
+    const bubble = document.getElementById("scrollSpeech");
+
+    if (selected.length) {
+      let intro = "“Oh wow—how amazing that Amasi and his ally saved these scrolls. Thanks to them, I can read about:<br><br>";
+      let list = selected.map(idx => `• ${scrollFacts[idx]}`).join("<br>");
+      let closing = `<br><br>Now I understand how important it is to preserve knowledge. Without them, these lessons might have been lost forever.”`;
+      bubble.innerHTML = `${intro}${list}${closing}`;
+    } else {
+      bubble.textContent = "“Oh no... none of the scrolls were saved. I wish we could have known their knowledge. It shows how fragile history can be when we fail to preserve it.”";
+    }
+  </script>
+</body>
+</html>
