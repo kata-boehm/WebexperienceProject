@@ -32,31 +32,38 @@
     }
 
     .speech-bubble {
-      top: 20%;
+      position: absolute;
+      top: 50%;
       left: 5%;
-      transform: translateY(0); /* remove -50% so it aligns nicely */
-      max-width: 40%;
-      max-width: 40%;
+      transform: translateY(-50%);
+      
+      max-width: 35%;      /* never too wide */
+      min-width: 200px;    /* ensures text doesn’t get cramped */
+      width: clamp(200px, 30%, 400px); /* scales smoothly between 200px and 400px */
+    
       background-color: #f5deb3;
       color: #2c1a0d;
-      padding: 20px;
+      padding: 12px 16px;  /* comfortable spacing */
       border-radius: 25px;
       box-shadow: 0 0 15px rgba(0,0,0,0.4);
-      font-size: 1.5em;
-      line-height: 1.5em;
+    
+      font-size: clamp(1em, 1.2vw, 1.3em); /* text scales with screen size */
+      line-height: 1.4em;
       z-index: 20;
+    
+      word-wrap: break-word; /* ensures long words don’t overflow */
     }
-
+    
     .speech-bubble::after {
       content: "";
       position: absolute;
       top: 50%;
-      right: -20px;
+      right: -10px;               /* slightly closer to bubble */
       transform: translateY(-50%);
       width: 0;
       height: 0;
-      border: 10px solid transparent;
-      border-left-color: #f5deb3;
+      border: 6px solid transparent; 
+      border-left-color: #f5deb3;  /* color matches bubble */
     }
 
     .next-button {
@@ -134,6 +141,7 @@
 
 </body>
 </html>
+
 
 
 
