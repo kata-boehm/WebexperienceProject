@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Embers of Alexandria – Scene 4B</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #2c1a0d;
+      font-family: 'Georgia', serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #fff;
+      overflow: hidden; /* Prevent page scroll */
+    }
+
+    .image-container {
+      position: relative;
+      width: 95%;
+      max-width: 1500px;
+      margin-top: 50px;
+      padding-bottom: 5vh;
+      display: flex;
+      justify-content: center;
+    }
+
+    .scene-image {
+      width: 60%;
+      max-height: 80vh;
+      height: auto;
+      display: block;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+
+    .quiz-container {
+      position: absolute;
+      top: -3vh;
+      right: 4%;
+      width: 35%;
+      background-color: #f5deb3;
+      color: #2c1a0d;
+      border-radius: 30px;
+      padding: 14px 18px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      font-size: 0.84em;
+      line-height: 1.5em;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    .quiz-container h1 {
+      font-size: 1.3em;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .question {
+      margin-bottom: 14px;
+    }
+
+    .answers label {
+      display: block;
+      margin: 4px 0;
+      cursor: pointer;
+    }
+
+    .quiz-container button {
+      margin-top: 10px;
+      font-size: 0.95em;
+      padding: 8px 20px;
+      background-color: #5a2e1c;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 0 8px rgba(0,0,0,0.3);
+    }
+
+    .quiz-container button:hover {
+      background-color: #8b4513;
+    }
+
+    .result {
+      margin-top: 12px;
+      font-size: 1em;
+      color: #2c1a0d;
+    }
+
+    .continue-btn {
+      display: none;
+      margin-top: 14px;
+      background-color: #5a2e1c;
+      color: white;
+      font-size: 1em;
+      padding: 8px 20px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .continue-btn:hover {
+      background-color: #8b4513;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="image-container">
+    <img src="scene4a.png" alt="Amasi thinking in the library" class="scene-image" />
+
+    <div class="quiz-container">
+      <h1>Test Your Knowledge</h1>
+      <form id="quizForm">
+        <div class="question">
+          1. What is an epistemic institution?
+          <div class="answers">
+            <label><input type="radio" name="q1" value="a"> A building for rituals</label>
+            <label><input type="radio" name="q1" value="b"> A place devoted to gathering, preserving, and sharing knowledge</label>
+            <label><input type="radio" name="q1" value="c"> A military school</label>
+          </div>
+        </div>
+
+        <div class="question">
+          2. Why is documentation important for history?
+          <div class="answers">
+            <label><input type="radio" name="q2" value="a"> It decorates the library</label>
+            <label><input type="radio" name="q2" value="b"> It entertains guests</label>
+            <label><input type="radio" name="q2" value="c"> It helps preserve lessons of the past and identity</label>
+          </div>
+        </div>
+
+        <div class="question">
+          3. What does cumulative cultural evolution mean?
+          <div class="answers">
+            <label><input type="radio" name="q3" value="a"> Starting from scratch every time</label>
+            <label><input type="radio" name="q3" value="b"> Building new knowledge upon what others discovered before us</label>
+            <label><input type="radio" name="q3" value="c"> Isolating cultures to keep them pure</label>
+          </div>
+        </div>
+
+        <button type="button" onclick="checkAnswers()">Submit Answers</button>
+      </form>
+      <div class="result" id="result"></div>
+      <button class="continue-btn" id="continueBtn" onclick="goToNextScene()">Continue</button>
+    </div>
+  </div>
+
+  <script>
+    function checkAnswers() {
+      const answers = {
+        q1: 'b',
+        q2: 'c',
+        q3: 'b'
+      };
+
+      const form = document.forms["quizForm"];
+      let correct = 0;
+
+      for (let q in answers) {
+        const selected = form[q].value;
+        if (selected === answers[q]) {
+          correct++;
+        }
+      }
+
+      const resultDiv = document.getElementById("result");
+      const continueBtn = document.getElementById("continueBtn");
+
+      if (correct === 3) {
+        resultDiv.textContent = "Excellent! You understand why this library matters so deeply.";
+        continueBtn.style.display = 'inline-block';
+      } else {
+        resultDiv.textContent = `You got ${correct}/3 correct. Try reviewing what Amasi told you.`;
+        continueBtn.style.display = 'none';
+      }
+    }
+
+    function goToNextScene() {
+      window.location.href = "scene4c.html";
+    }
+  </script>
+</body>
+</html>
